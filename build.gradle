@@ -1,0 +1,67 @@
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '6.0.+'
+}
+
+version = mod_version
+group = mod_group
+archivesBaseName = mod_name
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+minecraft {
+    mappings channel: mappings_channel, version: mappings_version
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            mods {
+                recruits_siege_compat {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+            mods {
+                recruits_siege_compat {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://www.curseforge.com/api/maven" }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:1.20.1-47.4.10"
+
+    implementation fg.deobf(files("libs/recruits.jar"))
+    implementation fg.deobf(files("libs/siege.jar"))
+    implementation fg.deobf(files("libs/geckolib.jar"))
+}
+
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : mod_name,
+                "Specification-Vendor"    : "YourName",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : mod_version,
+                "Implementation-Vendor"   : "YourName",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}

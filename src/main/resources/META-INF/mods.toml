@@ -1,0 +1,41 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="siege_machine_compat"
+version="${file.jarVersion}"
+displayName="Recruits Siege Compatibility"
+authors="Knightmare"
+description='''
+Adds AI compatibility between Recruits and Magistu's Medieval Siege Machines.
+Recruits bowmen can operate ranged siege weapons.
+'''
+
+[[dependencies.siege_machine_compat]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.siege_machine_compat]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.siege_machine_compat]]
+modId="recruits"
+mandatory=true
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.siege_machine_compat]]
+modId="siegemachines"
+mandatory=true
+versionRange="*"
+ordering="AFTER"
+side="BOTH"
