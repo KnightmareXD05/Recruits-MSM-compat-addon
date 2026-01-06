@@ -21,7 +21,7 @@ public class RecruitOperateAnyRangedMachineGoal extends Goal {
     private float errorPitch;
     private float errorYaw;
     private int errorDelayTicks = 0;
-    private float reloadDelayTicks = 0;
+    private int reloadDelayTicks = 0;
 
     public RecruitOperateAnyRangedMachineGoal(BowmanEntity bowman) {
         this.bowman = bowman;
@@ -85,6 +85,9 @@ public class RecruitOperateAnyRangedMachineGoal extends Goal {
         }
         for (int i = 0; i < bowman.getInventory().getContainerSize(); ++i) {
             ItemStack stack = bowman.getInventory().getItem(i);
+            if (stack.isEmpty()) {
+                continue;
+            }
             ItemStack stack1 = shootable.reload(stack);
             if (stack1 != stack) {
                 bowman.getInventory().setItem(i, stack1);
@@ -110,7 +113,7 @@ public class RecruitOperateAnyRangedMachineGoal extends Goal {
         yaw = Mth.wrapDegrees(errorYaw + yaw0);
         pitch = Mth.wrapDegrees(errorPitch + calculatePitch(targetPos, vehiclePos, shootable, yaw0));
         boolean shouldRotateTurret = shootable.getMachineType().rotationspeed == 0F;
-        shootable.setYawDest(shouldRotateTurret ? 0F : yaw);
+        shootable.setYawDest(shouldRotateTurret ? shootable.asLivingEntity().getYRot() : yaw);
         shootable.setTurretRotationsDest(pitch, shouldRotateTurret ? yaw : 0F);
         bowman.getLookControl().setLookAt(targetPos.x, targetPos.y, targetPos.z, 360, 360);
     }

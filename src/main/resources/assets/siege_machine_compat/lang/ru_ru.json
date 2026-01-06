@@ -1,0 +1,4 @@
+{
+	"siege_machine_compat.no_ammo": "%1$f : Недостаточно боеприпсов для орудия %2$f, сэр!",
+	"siege_machine_compat.reloaded": "%1$f : Орудие %2$f перезаряжено, сэр!"
+}

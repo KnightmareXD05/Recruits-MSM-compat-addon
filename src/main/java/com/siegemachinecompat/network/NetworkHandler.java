@@ -10,7 +10,7 @@ public class NetworkHandler {
 
     public static final SimpleChannel INSTANCE =
             NetworkRegistry.newSimpleChannel(
-                    ResourceLocation.fromNamespaceAndPath("siege_machine_compat", "main"),
+                    new ResourceLocation("siege_machine_compat", "main"),
                     () -> VERSION,
                     VERSION::equals,
                     VERSION::equals
