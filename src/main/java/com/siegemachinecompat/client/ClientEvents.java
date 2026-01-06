@@ -12,16 +12,16 @@ import org.lwjgl.glfw.GLFW;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ClientEvents {
 
-    public static KeyMapping FIRE_SIEGE;
+    public static KeyMapping FIRE_SIEGE_KEY;
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
-        FIRE_SIEGE = new KeyMapping(
+        FIRE_SIEGE_KEY = new KeyMapping(
                 "Siege fire command key",
                 GLFW.GLFW_KEY_M,
                 "key.categories.gameplay"
         );
-        event.register(FIRE_SIEGE);
+        event.register(FIRE_SIEGE_KEY);
     }
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT)
@@ -29,7 +29,7 @@ public class ClientEvents {
 
         @SubscribeEvent
         public static void onKey(InputEvent.Key event) {
-            if (FIRE_SIEGE.consumeClick()) {
+            if (FIRE_SIEGE_KEY.consumeClick()) {
                 FireSiegePacket.send();
             }
         }

@@ -1,16 +1,21 @@
-modLoader="javafml"
-loaderVersion="[47,)"
-license="All Rights Reserved"
-
-[[mods]]
-modId="siege_machine_compat"
-version="${file.jarVersion}"
-displayName="Recruits Siege Compatibility"
-authors="Knightmare"
-description='''
-Adds AI compatibility between Recruits and Magistu's Medieval Siege Machines.
-Recruits bowmen can operate ranged siege weapons.
-'''
+modLoader="javafml" #mandatory
+loaderVersion="${forge_version_range}" #mandatory
+license="${license}"
+[[mods]] #mandatory
+modId="${mod_id}" #mandatory
+version="${version}" #mandatory
+# A display name for the mod
+displayName="${description}" #mandatory
+# logoFile="siegemachines.png" #optional // TODO Logo
+credits="${credits}"
+authors="${mod_author}" #optional
+description='''${description}'''
+[[dependencies.siegemachines]]
+modId = "minecraft"
+versionRange = "[${minecraft_min_version},${minecraft_max_version})"
+mandatory = true
+side = "BOTH"
+ordering = "NONE"
 
 [[dependencies.siege_machine_compat]]
 modId="minecraft"
@@ -29,13 +34,13 @@ side="BOTH"
 [[dependencies.siege_machine_compat]]
 modId="recruits"
 mandatory=true
-versionRange="*"
+versionRange=">=${villager_recruits_version}"
 ordering="AFTER"
 side="BOTH"
 
 [[dependencies.siege_machine_compat]]
 modId="siegemachines"
 mandatory=true
-versionRange="*"
+versionRange=">=${siege_machines_version}"
 ordering="AFTER"
 side="BOTH"

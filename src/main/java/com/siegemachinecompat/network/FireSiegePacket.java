@@ -1,17 +1,26 @@
 package com.siegemachinecompat.network;
 
 import com.talhanation.recruits.entities.BowmanEntity;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
+import ru.magistu.siegemachines.api.enitity.Shootable;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Supplier;
 
 public class FireSiegePacket {
 
-    private static final Map<UUID, Long> LAST_FIRE = new HashMap<>();
+    // avoid potential OutOfMemoryError
+    private static final Map<UUID, Long> LAST_FIRED_CACHE = Collections.synchronizedMap(new LinkedHashMap<>(16, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<UUID, Long> eldest) {
+            return size() > 16;
+        }
+    });
 
     public static FireSiegePacket decode(net.minecraft.network.FriendlyByteBuf buf) {
         return new FireSiegePacket();
@@ -32,36 +41,24 @@ public class FireSiegePacket {
             long gameTime = player.level().getGameTime();
 
             UUID id = player.getUUID();
-            long last = LAST_FIRE.getOrDefault(id, 0L);
+            long last = LAST_FIRED_CACHE.getOrDefault(id, 0L);
 
             if (gameTime - last < 8)  // 0.4 seconds
                 return;
 
-            LAST_FIRE.put(id, gameTime);
+            LAST_FIRED_CACHE.put(id, gameTime);
 
             player.level().getEntitiesOfClass(
                     BowmanEntity.class,
                     player.getBoundingBox().inflate(40),
                     BowmanEntity::isPassenger
             ).forEach(bowman -> {
-
-                if (bowman.getVehicle() instanceof ru.magistu.siegemachines.entity.machine.ShootingMachine sm) {
-
-                    if (!sm.hasAmmo()) return;
-
-                    try {
-                        var d = sm.getClass().getField("delayticks");
-                        var u = sm.getClass().getField("useticks");
-                        var s = sm.getClass().getField("shootingticks");
-
-                        if ((int) d.get(sm) > 0) return;
-                        if ((int) u.get(sm) > 0) return;
-                        if ((int) s.get(sm) > 0) return;
-
-                    } catch (Exception ignored) {}
-
-
-                    sm.use(bowman);
+                if (bowman.getVehicle() instanceof Shootable shootable) {
+                    if (!shootable.hasAmmo() && bowman.getOwner() != null) {
+                        bowman.getOwner().sendSystemMessage(Component.translatable("siege_machine_compat.no_ammo", bowman.getDisplayName(), shootable.asLivingEntity().getDisplayName()));
+                        return;
+                    }
+                    shootable.use(bowman);
                 }
             });
         });
