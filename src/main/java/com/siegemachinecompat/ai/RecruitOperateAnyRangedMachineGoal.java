@@ -157,7 +157,7 @@ public class RecruitOperateAnyRangedMachineGoal extends Goal {
         float underSqrt = vSqr * vSqr - g * (g * horizontalDist * horizontalDist + 2 * dy * vSqr);
 
         if (underSqrt < 0) {
-            return -45.0F; // target is too far away, so we use angle for maximum fire distance
+            return -45.0F;
         }
 
         float sqrt = Mth.sqrt(underSqrt);

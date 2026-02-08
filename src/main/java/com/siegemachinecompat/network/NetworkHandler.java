@@ -23,5 +23,20 @@ public class NetworkHandler {
                 FireSiegePacket::encode,
                 FireSiegePacket::decode,
                 FireSiegePacket::handle);
+        INSTANCE.registerMessage(id++,
+                RamSwingPacket.class,
+                RamSwingPacket::encode,
+                RamSwingPacket::decode,
+                RamSwingPacket::handle);
+        INSTANCE.registerMessage(id++,
+                RamJumpPacket.class,
+                RamJumpPacket::encode,
+                RamJumpPacket::decode,
+                RamJumpPacket::handle);
+        INSTANCE.registerMessage(id++,
+                LadderDismountPacket.class,
+                LadderDismountPacket::encode,
+                LadderDismountPacket::decode,
+                LadderDismountPacket::handle);
     }
 }
