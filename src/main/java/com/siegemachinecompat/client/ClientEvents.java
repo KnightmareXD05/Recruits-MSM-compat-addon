@@ -4,6 +4,7 @@ import com.siegemachinecompat.network.FireSiegePacket;
 import com.siegemachinecompat.network.LadderDismountPacket;
 import com.siegemachinecompat.network.RamJumpPacket;
 import com.siegemachinecompat.network.RamSwingPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
@@ -19,6 +20,7 @@ public class ClientEvents {
     public static KeyMapping RAM_SWING_KEY;
     public static KeyMapping RAM_JUMP_KEY;
     public static KeyMapping LADDER_DISMOUNT_KEY;
+    public static KeyMapping SIEGE_SCREEN_KEY;
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
@@ -49,6 +51,13 @@ public class ClientEvents {
                 "key.categories.gameplay"
         );
         event.register(LADDER_DISMOUNT_KEY);
+
+        SIEGE_SCREEN_KEY = new KeyMapping(
+                "Siege command screen",
+                GLFW.GLFW_KEY_B,
+                "key.categories.gameplay"
+        );
+        event.register(SIEGE_SCREEN_KEY);
     }
 
     @Mod.EventBusSubscriber(value = Dist.CLIENT)
@@ -67,6 +76,9 @@ public class ClientEvents {
             }
             if (LADDER_DISMOUNT_KEY.consumeClick()) {
                 LadderDismountPacket.send();
+            }
+            if (SIEGE_SCREEN_KEY.consumeClick()) {
+                Minecraft.getInstance().setScreen(new LadderRamScreen());
             }
         }
     }
