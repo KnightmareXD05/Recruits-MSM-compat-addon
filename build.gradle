@@ -148,6 +148,7 @@ unifiedPublishing {
         relations {
             depends {
                 curseforge = "geckolib"
+                modrinth = "geckolib"
             }
             includes {}
             optional {}
@@ -170,6 +171,25 @@ unifiedPublishing {
             relations {
                 depends "medieval-siege-machines"
                 depends "recruits"
+            }
+        }
+
+        modrinth {
+            token = System.getenv("MODRINTH_TOKEN") ?: ""
+            id = rootProject.mod_modrinth_id
+
+            displayName = "[${rootProject.minecraft_version}] ${rootProject.mod_display_name} ${rootProject.version}"
+            version = rootProject.version
+            changelog = String.join("\n", rootProject.file("CHANGELOG.md").readLines())
+            releaseType = "release"
+            gameVersions = [rootProject.minecraft_version]
+            gameLoaders = ["forge"]
+
+            mainPublication tasks.jar
+
+            relations {
+                depends "medieval-siege-machines"
+                depends "villager-recruits"
             }
         }
     }
